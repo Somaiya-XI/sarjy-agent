@@ -14,7 +14,7 @@ from livekit.agents import (
     cli,
     function_tool,
     inference,
-    room_io
+    room_io,
 )
 import httpx
 from livekit.plugins import ai_coustics, groq, google
@@ -342,6 +342,7 @@ GUARDRAILS
 * For medical, legal, or financial topics, provide general information only.
   """
 
+
 class Assistant(Agent):
     def __init__(self, room) -> None:
         self.room = room
@@ -349,7 +350,7 @@ class Assistant(Agent):
             # A Large Language Model (LLM) is your agent's brain, processing user input and generating a response
             # See all available models at https://docs.livekit.io/agents/models/llm/
             # llm=groq.LLM(model="openai/gpt-oss-20b"),
-            llm=google.LLM(model="gemini-3.1-flash-lite"),
+            llm=groq.LLM(model="openai/gpt-oss-20b"),
             # To use a realtime model instead of a voice pipeline, replace the LLM
             # with a realtime model and remove the STT/TTS from the AgentSession
             # (Note: This is for OpenAI GPT-Live, the recommended speech-to-speech
@@ -359,14 +360,14 @@ class Assistant(Agent):
             # 3. Add `from livekit.plugins import openai` to the top of this file
             # 4. Replace the llm argument with:
             #    llm=openai.realtime.GPTLiveModel(voice="marin"),
-            instructions = textwrap.dedent(system_prompt),
+            instructions=textwrap.dedent(system_prompt),
         )
 
     @function_tool()
     async def search_artwork(
-            self,
-            context: RunContext,
-            query: str,
+        self,
+        context: RunContext,
+        query: str,
     ) -> dict[str, Any]:
         """Search museum collections for artwork candidates.
 
@@ -423,9 +424,7 @@ class Assistant(Agent):
             return result
 
         except Exception:
-            logger.exception(
-                "Unexpected artwork search failure"
-            )
+            logger.exception("Unexpected artwork search failure")
 
             return {
                 "query": query,
@@ -433,21 +432,14 @@ class Assistant(Agent):
                 "count": 0,
                 "results": [],
                 "fallback_used": False,
-                "errors": [
-                    {
-                        "error": (
-                            "The artwork search service is currently "
-                            "unavailable."
-                        )
-                    }
-                ],
+                "errors": [{"error": ("The artwork search service is currently " "unavailable.")}],
             }
 
     @function_tool()
     async def select_artwork(
-            self,
-            context: RunContext,
-            artwork_id: int,
+        self,
+        context: RunContext,
+        artwork_id: int,
     ) -> dict[str, Any]:
         """Select an artwork candidate for display in the frontend.
 
@@ -463,10 +455,12 @@ class Assistant(Agent):
         for artwork in getattr(self, "_last_artwork_results", []):
             if artwork.get("id") == artwork_id:
                 await self.room.local_participant.publish_data(
-                    json.dumps({
-                        "type": "artwork_candidate",
-                        "artwork": artwork,
-                    }).encode("utf-8"),
+                    json.dumps(
+                        {
+                            "type": "artwork_candidate",
+                            "artwork": artwork,
+                        }
+                    ).encode("utf-8"),
                     reliable=True,
                 )
 
@@ -549,13 +543,10 @@ async def my_agent(ctx: JobContext):
         room=ctx.room,
         room_options=room_io.RoomOptions(
             audio_input=room_io.AudioInputOptions(
-                noise_cancellation=ai_coustics.audio_enhancement(
-                    model=ai_coustics.EnhancerModel.QUAIL_VF_S
-                ),
+                noise_cancellation=ai_coustics.audio_enhancement(model=ai_coustics.EnhancerModel.QUAIL_VF_S),
             ),
         ),
     )
-
 
     # Join the room and connect to the user
     await ctx.connect()
