@@ -17,7 +17,7 @@ name = "agent-starter-python"
 version = "1.0.0"
 source = { editable = "." }
 dependencies = [
-    { name = "livekit-agents", extra = ["cerebras", "google"] },
+    { name = "livekit-agents", extra = ["cerebras", "deepgram", "google", "groq"] },
     { name = "livekit-plugins-ai-coustics" },
     { name = "livekit-plugins-groq" },
     { name = "python-dotenv" },
@@ -32,7 +32,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "livekit-agents", extras = ["cerebras", "google"], specifier = "~=1.8.2" },
+    { name = "livekit-agents", extras = ["cerebras", "deepgram", "google", "groq"], specifier = "~=1.8.2" },
     { name = "livekit-plugins-ai-coustics", specifier = "~=0.3" },
     { name = "livekit-plugins-groq", specifier = ">=1.8.5" },
     { name = "python-dotenv" },
@@ -1266,8 +1266,14 @@ codecs = [
     { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
     { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
+deepgram = [
+    { name = "livekit-plugins-deepgram" },
+]
 google = [
     { name = "livekit-plugins-google" },
+]
+groq = [
+    { name = "livekit-plugins-groq" },
 ]
 images = [
     { name = "pillow" },
@@ -1391,6 +1397,21 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/a8/96/2b173d70e36f803a9397556cfaa85cb3823fa6fb5eede2edbdef9d1db185/livekit_plugins_cerebras-1.8.5.tar.gz", hash = "sha256:b9800b1a7e8d4197f42fef6d1b5ef3efd70c50a29de1e08973ba247b695b411a", size = 5497, upload-time = "2026-10-06T01:40:27.148Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e2/37/e276c124d46dc65715fdb06f622cb8f3052f1c846a9d907e97d68b4e0603/livekit_plugins_cerebras-1.8.5-py3-none-any.whl", hash = "sha256:7b948226dbdae5500b3beebcac8de0bbd2858b3adaba4be93516c6e0ae9b1955", size = 6118, upload-time = "2026-10-06T01:40:26.024Z" },
+]
+
+[[package]]
+name = "livekit-plugins-deepgram"
+version = "1.8.5"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "livekit-agents", extra = ["codecs"] },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f2/49/1b37381afaecb334c22c9d7356c33e233e25b59af71230e035bf70704790/livekit_plugins_deepgram-1.8.5.tar.gz", hash = "sha256:a6773f9f0105c2945287d8b0c4aaa183fce85faba9acc89c5e01a96ca86433a4", size = 26209, upload-time = "2026-10-06T01:40:34.088Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a6/eb/556e9ae621f6cb056dbd3384ea7302c3134fab5b4c5632f33267fc96d0b6/livekit_plugins_deepgram-1.8.5-py3-none-any.whl", hash = "sha256:197ff3c44ad06b2bb6e846c76abb441c1fd03ac715b311b9006f60e8c9ad0ff5", size = 33137, upload-time = "2026-10-06T01:40:32.918Z" },
 ]
 
 [[package]]
